@@ -1,0 +1,1 @@
+Key takeaway: keeping js code and html code seperate for better organization.
