@@ -1,4 +1,4 @@
-const data = require('../../lib/data')
+const data_module = require('../../lib/data')
 const {hash, parseJson}=require('../../lib/utilities')
 
 const handler={}
@@ -32,7 +32,7 @@ handler.user.post = (reqProps,callback)=>{
             password: hash(password)
         }
         console.log(userObject)
-        data.create('user',mobile_number,userObject,(err)=>{
+        data_module.create('user',mobile_number,userObject,(err)=>{
             if(err){
                 callback(500,{
                     message:'Internal Server error'
@@ -52,31 +52,36 @@ handler.user.post = (reqProps,callback)=>{
 }
 handler.user.put = (reqProps,callback)=>{
     const phone = typeof reqProps.queryStringObject?.mobile_number === 'string' && reqProps.queryStringObject?.mobile_number?.trim() ? reqProps.queryStringObject?.mobile_number : false
-    console.log("PUT")
-    data.read('user',phone,(err,userInfo)=>{
-        if(!err && d){
+    console.log(phone)
+    data_module.read('user',phone,(err,userInfo)=>{
+        if(!err && userInfo){
             const firstName = typeof(reqProps?.body?.firstName) === 'string' && reqProps.body?.firstName?.trim().length>0 ? reqProps?.body?.firstName : false
             const lastName = typeof(reqProps?.body?.lastName) === 'string' && reqProps.body?.lastName?.trim().length>0 ? reqProps?.body?.lastName : false
             const mobile_number= typeof(reqProps?.body?.mobile_number) === 'string' && reqProps?.body?.mobile_number.trim().length>0 ? reqProps?.body?.mobile_number : false
             const password= typeof(reqProps?.body?.password) === 'string' && reqProps?.body?.password.trim().length>0 ? reqProps?.body?.password : false
             if (firstName || lastName || mobile_number || password){ 
-                console.log("One or more field needs to be updated")
-                data.update('user',phone,userInfo,(err)=>{
+                console.log("One or more field needs to be updated...")
+                  
+                if(userInfo.firstName)
+                    userInfo.firstName=firstName
+                if(userInfo.lastName)
+                    userInfo.lastName=lastName
+                if(userInfo.mobile_number)
+                    userInfo.mobile_number=mobile_number
+                if(userInfo.password)
+                    userInfo.password=password
+                data_module.update('user',phone,userInfo,(err)=>{
+                    
                     if(err){
+                        console.log(err)
                         callback(500,{
                             'message':'Internal server error'
                         })
                     }else{
-                        if(userInfo.firstName)
-                            userInfo.firstName=firstName
-                        if(userInfo.lastName)
-                            userInfo.lastName=lastName
-                        if(userInfo.mobile_number)
-                            userInfo.mobile_number=mobile_number
-                        if(userInfo.password)
-                            userInfo.password=password
+                      
+                        callback(201,{'message':'User updated'})
                     }
-                    callback(201,{'message':'User updated'})
+                    
                 })
             }else{
                 callback(500,{
@@ -87,22 +92,50 @@ handler.user.put = (reqProps,callback)=>{
     })  
 }
 handler.user.get = (reqProps,callback)=>{
-    console.log(reqProps)
+    
     const phone = typeof reqProps.queryStringObject?.mobile_number === 'string' && reqProps.queryStringObject?.mobile_number?.trim() ? reqProps.queryStringObject?.mobile_number : false
-    data.read('user',phone,(err,data)=>{
+
+    data_module.read('user',phone,(err,data)=>{
+        //console.log(data)
+        
         callback(200,{
-            user:parseJson(data)
+            user:data
         })
     })
 
 }
 
-handler.user.put = (reqProps,callback)=>{
-
-}
 
 handler.user.delete = (reqProps,callback)=>{
-
+    const phone = typeof reqProps.queryStringObject.mobile_number === 'string' && reqProps.queryStringObject.mobile_number.trim()? reqProps.queryStringObject.mobile_number : false;
+    if (phone){
+        
+        data_module.read('user',phone,(err,data)=>{
+            if(!err && data){
+                data_module.delete('user',phone,(err)=>{
+                    if(!err){
+                        callback(200,{
+                            "message":"User was successfully deleted."
+                        })
+                    }
+                    else{
+                        callback(500,{
+                            error:"there was a server side error -1"
+                        })
+                    }
+                })
+            }else{
+                console.log(err)
+                callback(500,{
+                    error:'There was a server side error. -2'
+                })
+            }
+        })
+    }else{
+        callback(500,{
+            error:'There was a server side error- 3'
+        })
+    }
 }
 
 module.exports=handler

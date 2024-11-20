@@ -4,8 +4,11 @@ const utility={}
 utility.parseJson=(content)=>{
     let output = {}
     try{
+        //console.log(content)
         output=JSON.parse(content)
-    }catch{
+        
+    }catch(err){
+        //console.log(err)
         output={}
     }
     //console.log("X:")

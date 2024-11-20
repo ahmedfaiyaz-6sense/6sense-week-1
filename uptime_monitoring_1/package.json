@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Raw Nodejs project.",
   "main": "index.js",
-  "scripts":{
-    "start" : "NODE_ENV=staging yarn nodemon index.js",
-    "production": "NODE_ENV=production yarn nodemon index.js"
+  "scripts": {
+    "start": "yarn nodemon index.js", 
+    "production": "yarn nodemon index.js"
   },
   "license": "MIT",
   "devDependencies": {
@@ -14,6 +14,7 @@
     "globals": "^15.12.0"
   },
   "dependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "yarn": "^1.22.22"
   }
 }
