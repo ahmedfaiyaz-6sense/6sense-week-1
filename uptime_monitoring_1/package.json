@@ -4,7 +4,8 @@
   "description": "Raw Nodejs project.",
   "main": "index.js",
   "scripts":{
-    "start" : "yarn nodemon index.js"
+    "start" : "NODE_ENV=staging yarn nodemon index.js",
+    "production": "NODE_ENV=production yarn nodemon index.js"
   },
   "license": "MIT",
   "devDependencies": {
