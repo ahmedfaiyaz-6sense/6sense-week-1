@@ -25,8 +25,7 @@ handler.handleReqRes = (req, res) => {
     queryStringObject,
     headerObject,
   };
-  //console.log("All routes:");
-  //console.log(routes);
+
   const choosen_handler = routes[trimmed_path]
     ? routes[trimmed_path]
     : notFoundHandler;
@@ -43,25 +42,16 @@ handler.handleReqRes = (req, res) => {
     data_recieved += decoder.end();
     reqProps.body = parseJson(data_recieved);
     choosen_handler.handle(reqProps, (statuscode, payload) => {
-        console.log(statuscode)
-        console.log(payload)
-        //console.log("RECIEVED PAYLOAD: " + payload?.message);
-        //console.log("Recieved Status Code: " + statuscode);
         statuscode = typeof statuscode === "number" ? statuscode : 500;
         payload = typeof payload === "object" ? payload : {};
-        //console.log(payload)
         const payloadString = JSON.stringify(payload);
-        //console.log("Sending payload: " + payloadString);
-        //console.log("Sending status code: " + statuscode);
+    
         res.writeHead(statuscode);
     
         res.end(payloadString);
       }); /// first one is req prop second one is callback function that will be returned by handler
     
-    //console.log("RECIEVED JSON: ")
-    //console.log(reqProps?.body)
-    //console.log("Recieved JSON: "+request["body"])
-    //console.log(data_recieved.toString());
+
   });
 
  // res.end();
