@@ -145,4 +145,24 @@ handler._token.delete=(reqProps,callback)=>{
         })
     }
 }
+handler._token.verify=(token_id,phone,callback)=>{
+    if(typeof token_id === 'string' && typeof phone === 'string'){
+        data_module.read('tokens',token_id,(err,tokenInfo)=>{
+            if (!err && tokenInfo){
+                console.log(tokenInfo.phone,phone,tokenInfo.expires)
+                if (tokenInfo.phone===phone && Number(tokenInfo.expires)>Number(Date.now())){
+                    callback(true)
+                }else{
+                    callback(false)
+                }
+            }else{
+                callback(false)
+            }
+        })
+    }
+    else{
+        callback(false)
+    }
+}
+
 module.exports=handler

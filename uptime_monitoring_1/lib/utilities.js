@@ -8,7 +8,7 @@ utility.parseJson=(content)=>{
         output=JSON.parse(content)
         
     }catch(err){
-        //console.log(err)
+        console.log(err)
         output={}
     }
     //console.log("X:")
