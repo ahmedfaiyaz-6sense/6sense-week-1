@@ -113,5 +113,11 @@ lib.delete = (folder, file_name, callback) => {
     }
   });
 };
-
+lib.list = (folder_name,callback)=>{
+  const folder_path=lib.base_dir + "/" + folder_name;
+  file_system.readdir(folder_path,(err,files)=>{
+   // console.log(files)
+    callback(files)
+  })
+}
 module.exports = lib;

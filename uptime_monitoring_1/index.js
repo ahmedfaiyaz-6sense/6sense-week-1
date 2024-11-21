@@ -2,6 +2,7 @@ const http=require('http');
 
 const {handleReqRes}=require('./helpers/handleReqRes')
 const environment = require('./helpers/environments')
+const worker = require('./lib/worker')
 //const data = require('./lib/data')
 const app={};
 /*data.create('test','db',{
@@ -34,6 +35,7 @@ app.createServer=()=>{
     server.listen(environment.port,()=>{
         console.log("App is running on "+environment.port)
     })
+    worker.init()
 }
 
 app.handleRequest=handleReqRes
