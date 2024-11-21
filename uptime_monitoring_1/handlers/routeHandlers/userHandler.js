@@ -34,6 +34,7 @@ handler.user.post = (reqProps,callback)=>{
         console.log(userObject)
         data_module.create('user',mobile_number,userObject,(err)=>{
             if(err){
+                console.log(err)
                 callback(500,{
                     message:'Internal Server error'
                 })
@@ -52,7 +53,7 @@ handler.user.post = (reqProps,callback)=>{
 }
 handler.user.put = (reqProps,callback)=>{
     const phone = typeof reqProps.queryStringObject?.mobile_number === 'string' && reqProps.queryStringObject?.mobile_number?.trim() ? reqProps.queryStringObject?.mobile_number : false
-    console.log(phone)
+    //console.log(phone)
     data_module.read('user',phone,(err,userInfo)=>{
         if(!err && userInfo){
             const firstName = typeof(reqProps?.body?.firstName) === 'string' && reqProps.body?.firstName?.trim().length>0 ? reqProps?.body?.firstName : false
