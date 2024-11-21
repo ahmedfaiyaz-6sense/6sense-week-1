@@ -14,16 +14,17 @@ handler.handleReqRes = (req, res) => {
   const trimmed_path = path_name.replace(/^\/+|\/+$/g, "");
   const method = req.method.toLowerCase();
   const queryStringObject = parsedUrl.query;
-  const headerObject = req.headerObject;
+  const headersObject = req.headers;
   const decoder = new StringDecoder("utf-8");
-  console.log(queryStringObject)
+  console.log("REQ BODY")
+  console.log(req.body)
   const reqProps = {
     parsedUrl,
     path_name,
     trimmed_path,
     method,
     queryStringObject,
-    headerObject,
+    headersObject,
   };
 
   const choosen_handler = routes[trimmed_path]
@@ -40,7 +41,11 @@ handler.handleReqRes = (req, res) => {
   });
   req.on("end", () => {
     data_recieved += decoder.end();
+    //console.log("DATA RECIEVED")
+    //console.log(data_recieved)
     reqProps.body = parseJson(data_recieved);
+    //console.log("REQ BODY")
+    //console.log(reqProps.body)
     choosen_handler.handle(reqProps, (statuscode, payload) => {
         statuscode = typeof statuscode === "number" ? statuscode : 500;
         payload = typeof payload === "object" ? payload : {};
