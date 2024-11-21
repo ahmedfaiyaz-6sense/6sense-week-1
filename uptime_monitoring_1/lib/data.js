@@ -23,7 +23,7 @@ lib.create = (dir, file, data, callback) => {
   console.log("Creating file " + file_path);
   file_system.mkdir(folder_path, (err) => {
     if (err) {
-      callback("Could not create folder.Folder already exist.");
+      callback(false);
     } else {
       callback("Folder created successfully " + folder_path);
     }
