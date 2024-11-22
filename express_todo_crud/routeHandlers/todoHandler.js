@@ -9,8 +9,22 @@ todo_route.get("/", async (req, res) => {
   res.send({
     message: "Get request",
   });
-});
+})
+todo_route.get("/find_active",async (req,res)=>{
+  const todo_instance = new Todo()
+  const data = await todo_instance.findActive()
 
+  if (data){
+    res.send({
+      message:"Success",
+      data:data
+    })
+  }else{
+    res.send({
+      message:"Failed"
+    })
+  }
+})
 //get a todo by id
 todo_route.get("/:id", async (req, res) => {
   await Todo.findByIdAndUpdate(
@@ -120,4 +134,4 @@ todo_route.delete("/:id", async (req, res) => {
     });
 });
 
-module.exports = todo_route;
+module.exports = todo_route
