@@ -2,7 +2,9 @@ const express = require('express')
 const fs= require('node:fs')
 //const dashboard = require('./dashboard_api')
 const {adminRouter,publicRouter}=require('./routing_example')
+const profile_upload=require('./file_upload_route')
 const app= express()
+
 app.use(express.json())
 
 app.get('/',(req,res)=>{
@@ -11,7 +13,7 @@ app.get('/',(req,res)=>{
 
 
 
-
+app.use('/profile',profile_upload)
 app.use('/admin_router',adminRouter)
 app.use('/public_router',publicRouter)
 
