@@ -1,3 +1,4 @@
+// data module to handle file system related operations
 const file_system = require("fs");
 const path = require("path");
 const { parseJson } = require("./utilities");
